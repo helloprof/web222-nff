@@ -379,7 +379,62 @@ function getObservationsByTaxa(data, ...taxaNames) {
  * Use the Array .filter() function in your solution.
  ******************************************************************************/
 function getObservationsByLocation(data, options = {}) {
+
+  function isNumber(value) {
+    return typeof value === 'number';
+  }
+
+    let newData =  data.results.filter((result) => {
+      let locations = result.location.split(",")
+      let lat = parseFloat(locations[0])
+      let lng = parseFloat(locations[1])
+
+      let filterBoolean = true
+
+
+      if (isNumber(options.lat)) {
+        if (options.lat !== lat) {
+          filterBoolean = false
+        }
+      } else {
+        if (options.lat) {
+          if (options.lat.min > lat) {
+            filterBoolean = false
+          }
+  
+          if (options.lat.max < lat) {
+            filterBoolean = false
+          }
+        }
+
+      }
+      
+      if (isNumber(options.lng)) {
+        if (options.lng !== lng) {
+          filterBoolean = false
+        }
+      } else {
+        if (options.lng) {
+          if (options.lng.min > lng) {
+            filterBoolean = false
+          }
+  
+          if (options.lng.max < lng) {
+            filterBoolean = false
+          }
+        }
+
+      }
+
+
+    
+
+
+      return filterBoolean
+    })
+
   // TODO
+  return newData
 }
 
 /*******************************************************************************
